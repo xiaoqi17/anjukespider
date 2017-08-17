@@ -11,6 +11,7 @@ def xinfan_run(page):
         xinfan.text_html(url)
 
 
+
 def ershoufang_run(page):
     urls = ershoufang.page_html(page)
     for url in urls:
@@ -24,13 +25,13 @@ def zufang_run(page):
 
 
 
+
 if __name__ == '__main__':
 
     pool = Pool()
-    groups = ([x for x in range(1,51)])
-    pool.map(xinfan_run,groups )
-    pool.map(ershoufang_run,groups)
-    pool.map(zufang_run,groups)
+    pool.map(xinfan_run,[x for x in range(1,61)] )
+    pool.map(ershoufang_run,[x for x in range(1,118)])
+    pool.map(zufang_run,[x for x in range(1,51)])
     pool.close()
     pool.join()
 
