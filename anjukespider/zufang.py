@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import json
 import re
 import requests
 import sys
@@ -10,8 +11,9 @@ sys.setdefaultencoding('utf-8')
 
 client = pymongo.MongoClient('localhost', 27017)
 ceshi = client['anjukespier']
-url_list = ceshi['url_list']
 item_info = ceshi['zufang']
+m_item_info =  ceshi['m_zufang']
+
 
 headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) '}
 def page_html(pages):
@@ -23,7 +25,6 @@ def page_html(pages):
             soup = BeautifulSoup(wb_data.text, 'lxml')
             for link in soup.select(' div.zu-info > h3 > a'):
                 url = link.get('href')
-                url_list.insert_one({'url': url})
                 print url
                 yield url
         else:
@@ -33,7 +34,7 @@ def page_html(pages):
 
 def text_html(url):
     try:
-        if url_list.find_one({'url': url}):
+        if item_info.find_one({'房子链接': url}):
             print '%s爬过'%url
         else:
             wb_data = requests.get(url,headers=headers)
@@ -55,8 +56,7 @@ def text_html(url):
                 leixings = soup.select(' div.ritem.fr > dl:nth-of-type(6) > dd')
                 configures = soup.select('#proLinks > p')
                 intermediarys = soup.select(' div.broker_rig_info > h2')
-                tels = soup.select(' div.broker_infor.broker_infor_mt35 > p')
-                # print residentials
+                tels = soup.select('  div.broker_infor > p')
                 for title,residential,zujin,yafu,fangxing,zlfs,addr,zhuangxiu,mianji,chaoxiang,loucheng,leixing,configure,intermediary,tel in zip(titles,residentials,zujins,yafus,fangxings,zlfss,addrs,zhuangxius,mianjis,chaoxiangs,louchengs,leixings,configures,intermediarys,tels):
                     data ={
                             '楼盘':title.get_text().strip(),
@@ -82,5 +82,5 @@ def text_html(url):
             else:
                 pass
     except:
-        print '解析错误'
+        print '%s解析错误'%url
 
