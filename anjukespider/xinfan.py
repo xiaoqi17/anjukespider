@@ -130,4 +130,3 @@ def text_html(url):
                 pass
     except:
         print '%s解析错误'%url
-
