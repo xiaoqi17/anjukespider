@@ -129,5 +129,5 @@ def text_html(url):
             else:
                 pass
     except:
-        print '解析错误'
+        print '%s解析错误'%url
 
