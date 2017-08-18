@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import re
-
 import requests
 import sys
 from bs4 import BeautifulSoup
@@ -13,8 +12,6 @@ sys.setdefaultencoding('utf-8')
 
 client = pymongo.MongoClient('localhost', 27017)
 ceshi = client['anjukespier']
-url_list = ceshi['url_list']
-# m_url_list = ceshi['m_url_list']
 item_info = ceshi['ershoufang']
 m_item_info =  ceshi['m_ershoufang']
 
@@ -30,7 +27,6 @@ m_item_info =  ceshi['m_ershoufang']
 #             soup = BeautifulSoup(wb_data.text, 'lxml')
 #             for link in soup.select('  div.house-details > div.house-title > a'):
 #                 url = link.get('href')
-#                 url_list.insert_one({'url': url})
 #                 print url
 #                 yield url
 #         else:
@@ -40,7 +36,7 @@ m_item_info =  ceshi['m_ershoufang']
 #
 # def text_html(url):
 #     try:
-#         if url_list.find_one({'url': url}):
+#         if item_info.find_one({'url': url}):
 #             print '%s爬过'%url
 #         else:
 #             wb_data = requests.get(url,headers=headers)
@@ -143,5 +139,5 @@ def text_html(url):
             else:
                 pass
     except:
-        print '解析错误'
+        print '%s解析错误'%url
 
